@@ -50,8 +50,6 @@ exports.template = (grunt, init, done) ->
 
     props.keywords = []
     props.preferGlobal = true
-    props.browserify = {}
-    props.browserify.transform = ['coffeeify','hbsfy']
     props.devDependencies =
       "browser-sync": "^2.7.1"
       "browserify": "^10.2.0"
@@ -76,7 +74,6 @@ exports.template = (grunt, init, done) ->
     # Files to copy (and process).
     files = init.filesToCopy(props)
 
-
     # Add properly-named license files.
     init.addLicenseFiles(files, props.licenses)
 
@@ -85,8 +82,11 @@ exports.template = (grunt, init, done) ->
 
     # Generate package.json file.
     init.writePackageJSON 'package.json',  props, (pkg, props) ->
+      pkg['browserify'] =
+        transform : ['coffeeify','hbsfy']
+
       pkg['scripts'] =
-        test: 'gulp test'
+        test : 'gulp test'
       pkg
 
     # All done!
